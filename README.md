@@ -1,4 +1,4 @@
-# nlp-03-text-exploration
+# nlp-03-text-exploration-custom
 
 [![Python 3.14](https://img.shields.io/badge/python-3.14%2B-blue?logo=python)](pyproject.toml)
 [![CI](https://github.com/denisecase/nlp-03-text-exploration/actions/workflows/ci-python-zensical.yml/badge.svg)](https://github.com/denisecase/nlp-03-text-exploration/actions/workflows/ci-python-zensical.yml)
@@ -13,11 +13,15 @@
 
 ## Project Overview
 
-Author: Denise Case
+Author: Addie Gemmell
 
 Date: 2026 October
 
 Third project in the Web Mining and Applied NLP course.
+
+### Planned Customization
+
+I plan to customize this project to analyze fictional fraud alerts and case notes. I want to compare different types of fraud, identify commonly used words, and explore patterns using word frequencies, co-occurrence, and bigrams.
 
 This project introduces exploratory text analysis.
 
