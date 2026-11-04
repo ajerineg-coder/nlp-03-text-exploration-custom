@@ -1,4 +1,8 @@
-"""Offline smoke test for exploratory corpus analysis."""
+"""Offline smoke test for exploratory corpus analysis.
+
+Author: Addie Gemmell
+Date: 2026-11
+"""
 
 import runpy
 

@@ -1,5 +1,8 @@
 """nlp_corpus_explore.py - Module 3 Script.
 
+Author: Addie Gemmell
+Date: 2026-11
+
 Purpose
 
   Perform exploratory analysis of a small, controlled text corpus.
@@ -315,8 +318,12 @@ print("- Co-occurrence reveals contextual relationships between words.")
 print("- Bigrams capture local structure beyond single tokens.")
 print("- Patterns emerge before any machine learning is applied.")
 
-print("\nYOURNAME SPECIFIC OBSERVATIONS:")
-print("TODO")
+print("\nADDIE GEMMELL SPECIFIC OBSERVATIONS:")
+print("- Word frequencies help identify common terms within each category.")
+print("- Bigrams and co-occurrence show how words relate to each other.")
+print(
+    "- These techniques could also help identify patterns in fraud alerts and case notes."
+)
 
 
 # ============================================================
