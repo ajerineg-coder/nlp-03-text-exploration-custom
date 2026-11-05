@@ -1,161 +1,190 @@
+
 # nlp-03-text-exploration-custom
 
 [![Python 3.14](https://img.shields.io/badge/python-3.14%2B-blue?logo=python)](pyproject.toml)
-[![CI](https://github.com/denisecase/nlp-03-text-exploration/actions/workflows/ci-python-zensical.yml/badge.svg)](https://github.com/denisecase/nlp-03-text-exploration/actions/workflows/ci-python-zensical.yml)
-[![Documentation](https://img.shields.io/badge/docs-site-blue?logo=github)](https://denisecase.github.io/nlp-03-text-exploration/)
-
+[![CI](https://github.com/ajerineg-coder/nlp-03-text-exploration-custom/actions/workflows/ci-python-zensical.yml/badge.svg)](https://github.com/ajerineg-coder/nlp-03-text-exploration-custom/actions/workflows/ci-python-zensical.yml)
+[![Documentation](https://img.shields.io/badge/docs-site-blue?logo=github)](https://ajerineg-coder.github.io/nlp-03-text-exploration-custom/)
 [![uv managed](https://img.shields.io/badge/uv-managed-DE5FE9)](https://docs.astral.sh/uv/)
 [![ty type checked](https://img.shields.io/badge/ty-type_checked-2F80ED)](https://docs.astral.sh/ty/)
 [![Zensical docs](https://img.shields.io/badge/Zensical-docs-purple)](https://zensical.org/)
 [![MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-> Explore text corpora using token frequencies, categories, and contextual patterns.
+> Explore vocabulary patterns in fictional financial fraud alerts using token frequencies, category comparisons, co-occurrence, and bigrams.
 
 ## Project Overview
 
-Author: Addie Gemmell
+**Author:** Addie Gemmell  
+**Date:** November 2026  
+**Course:** Web Mining and Applied NLP  
+**Project:** 03 - Text Exploration
 
-Date: 2026 October
+This project explores how natural language processing (NLP) techniques can identify vocabulary patterns across different categories of text.
 
-Third project in the Web Mining and Applied NLP course.
+For my custom application, I chose to analyze fictional financial fraud alerts and case descriptions. I wanted to see how the wording differs between fraud categories and whether commonly used words and word combinations could help identify patterns.
 
-### Planned Customization
-
-I plan to customize this project to analyze fictional fraud alerts and case notes. I want to compare different types of fraud, identify commonly used words, and explore patterns using word frequencies, co-occurrence, and bigrams.
-
-This project introduces exploratory text analysis.
-
-The goal is to examine a collection of text documents,
-identify patterns in vocabulary,
-compare categories,
-and explore relationships between words.
-
-These techniques provide foundations for understanding
-more advanced NLP methods, including
-language representations and embeddings.
-
-The project is configured in
-[pyproject.toml](pyproject.toml).
+The project uses Python, Polars, and Matplotlib to examine token frequencies, word co-occurrence, bigrams, and category differences.
 
 ## Data
 
-The example uses a small, controlled text corpus
-defined directly in the Python script.
+I created a small corpus of 12 fictional fraud alert descriptions organized into three categories:
 
-The corpus contains 22 short documents
-organized into four categories:
+- **Check Fraud:** 4 descriptions involving counterfeit checks, altered checks, stolen checks, and suspicious deposits.
+- **Wire Fraud:** 4 descriptions involving fraudulent wire instructions, suspicious beneficiaries, and payment requests.
+- **Account Takeover:** 4 descriptions involving unauthorized logins, password resets, and suspicious online banking activity.
 
-- Dogs.
-- Cats.
-- Cars.
-- Trucks.
+Each document contains a category label and a short text description.
 
-Each document includes a category label
-and a short text passage.
-
-No external input dataset or web connection is required.
+All descriptions are fictional and were created for this assignment. No actual customer information or confidential banking data was used.
 
 ## Approach
 
-The project uses Python and Polars
-to explore patterns in a labeled text corpus.
+The project follows the exploratory text analysis process demonstrated in the original example.
 
-The example demonstrates:
+The analysis includes:
 
-- Representing a collection of documents as a corpus.
-- Tokenizing and cleaning text.
-- Computing global token frequencies.
+- Creating a labeled corpus of text documents.
+- Tokenizing and cleaning text by converting words to lowercase, removing punctuation, and filtering common stop words.
+- Calculating global token frequencies.
 - Comparing token frequencies across categories.
-- Identifying frequently occurring words within categories.
+- Identifying the most frequently used words in each category.
 - Examining word co-occurrence using context windows.
 - Creating and counting bigrams.
-- Visualizing and interpreting token distributions.
+- Visualizing vocabulary differences.
+- Interpreting the results and identifying limitations.
 
-Explore these important project components:
+These techniques help identify patterns in text before applying machine learning or more advanced NLP models.
 
-- [pyproject.toml](pyproject.toml) - project identity, dependencies, and tool configuration.
-- [src/nlp/nlp_corpus_explore.py](src/nlp/nlp_corpus_explore.py) - executable Python corpus analysis.
-- [tests/](tests/) - automated tests.
-- [.github/workflows/](.github/workflows/) - automated testing and documentation deployment.
-- [docs/](docs/) - project documentation.
-- [zensical.toml](zensical.toml) - documentation configuration.
+## Phase 4: Technical Modification
 
-The goal is to observe structure in text
-before applying machine learning or language models.
+For the technical modification, I compared context window sizes of 2 and 3 tokens using the original example corpus.
+
+A context window determines how many words before and after a target word are considered when examining co-occurrence.
+
+Increasing the window size allows more surrounding words to be included in the analysis.
+
+The comparison showed that larger context windows generally produced more co-occurring word relationships because additional nearby words were included.
+
+The results were visualized using a bar chart comparing the two window sizes across the original categories.
+
+[View Phase 4 Context Window Comparison Notebook](notebooks/phase4_context_window_comparison.ipynb)
+
+## Phase 5: Custom Fraud Text Exploration
+
+For my custom project, I applied the same exploratory analysis techniques to the 12 fictional fraud descriptions.
+
+The analysis compares vocabulary across check fraud, wire fraud, and account takeover.
+
+### Global and Category Token Frequencies
+
+Token frequencies show which words appear most often throughout the corpus and within individual fraud categories.
+
+The results showed differences in the vocabulary associated with each category.
+
+- **Check Fraud:** Frequently included words such as "check" and "deposited."
+- **Wire Fraud:** Frequently included words such as "wire," "requested," and "fraudulent."
+- **Account Takeover:** Included terms such as "login," "online," and "banking."
+
+These differences reflect the types of activities described in each category.
+
+### Co-occurrence and Bigrams
+
+Co-occurrence analysis identifies words that appear near one another within a specified context window.
+
+Bigrams identify pairs of consecutive words.
+
+These methods provide more information about how words are used together rather than looking only at individual word counts.
+
+For fraud analysis, these relationships may help distinguish language associated with different types of suspicious activity.
+
+### Visualization
+
+I created a visualization comparing the most frequently used words across all three fraud categories.
+
+The charts make it easier to see differences in vocabulary and identify terms that appear more frequently within specific categories.
+
+[View Phase 5 Fraud Text Exploration Notebook](notebooks/phase5_fraud_text_exploration.ipynb)
+
+## Interpretation and Limitations
+
+The results demonstrate that different types of fraud descriptions can have recognizable vocabulary patterns.
+
+For example, check fraud descriptions focus on checks and deposits, while wire fraud descriptions emphasize transfers and payment requests. Account takeover descriptions contain more references to login activity and online banking.
+
+These findings show how basic NLP techniques could be useful when exploring larger collections of fraud alerts or case notes.
+
+However, this project uses only 12 fictional descriptions. The results are not representative of actual fraud activity, and word frequencies alone cannot determine whether a transaction or account activity is fraudulent.
+
+Additional data, context, and more advanced analysis would be necessary before applying these techniques to real-world fraud detection.
+
+## Project Files
+
+- [pyproject.toml](pyproject.toml) - Project configuration and dependencies.
+- [src/nlp/nlp_corpus_explore.py](src/nlp/nlp_corpus_explore.py) - Custom fraud corpus analysis script.
+- [notebooks/phase4_context_window_comparison.ipynb](notebooks/phase4_context_window_comparison.ipynb) - Technical modification comparing context windows.
+- [notebooks/phase5_fraud_text_exploration.ipynb](notebooks/phase5_fraud_text_exploration.ipynb) - Custom fraud text exploration.
+- [tests/](tests/) - Automated tests.
+- [docs/](docs/) - Project report and documentation.
+- [zensical.toml](zensical.toml) - Documentation configuration.
 
 ## Run the Project
 
-Follow the [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
-to set up your machine and project environment.
+Follow the [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/) to set up your machine and project environment.
 
-From a VS Code terminal in the project root:
+From a VS Code terminal in the project root, run:
 
 ```shell
+uv sync
 uv run python -m nlp.nlp_corpus_explore
 ```
 
-Close each visualization window after viewing
-so the script can continue executing.
+Close the visualization window after viewing the chart so the script can finish executing.
 
-## Results
+The analysis displays token frequencies, category comparisons, co-occurrence information, bigram frequencies, and visualizations.
 
-The analysis produces frequency distributions,
-category comparisons, co-occurrence information,
-and bigram frequencies.
+A successful execution displays:
 
-The results demonstrate how vocabulary and
-word proximity reveal patterns within a corpus.
-
-Successful execution produces:
-
-```shell
-========================
+```text
 Pipeline executed successfully!
-========================
 ```
-
-A `project.log` file is created in the project root.
-
-This confirms that the Python analysis executes
-and the logging system works.
 
 ## Verification
 
-Run the automated tests:
+Run the following commands to check formatting, code quality, and automated tests:
 
 ```shell
+uv run ruff check .
+uv run ruff format --check .
 uv run python -m pytest
 ```
 
+These checks help verify that the project runs correctly and follows the expected Python coding standards.
+
 ## Project Documentation
 
-The [hosted documentation site](https://denisecase.github.io/nlp-03-text-exploration/)
-is published using Zensical and GitHub Pages.
+The project documentation includes the analytical question, corpus description, technical modification, results, visualizations, interpretation, and limitations.
 
-The documentation site is used to present the project report,
-covering such sections as data, methods, results, visualizations,
-interpretation, and conclusions.
+- [GitHub Repository](https://github.com/ajerineg-coder/nlp-03-text-exploration-custom)
+- [Project Documentation](https://ajerineg-coder.github.io/nlp-03-text-exploration-custom/)
+- [Project Report](docs/index.md)
+- [Phase 4 Notebook](notebooks/phase4_context_window_comparison.ipynb)
+- [Phase 5 Notebook](notebooks/phase5_fraud_text_exploration.ipynb)
+
+The documentation is configured for publication using Zensical and GitHub Pages.
 
 ## CI/CD and GitHub Actions
 
-This project includes continuous integration and continuous deployment (CI/CD)
-to check project files and publish the docs.
+This project includes continuous integration and continuous deployment (CI/CD) workflows for checking code quality and publishing documentation.
 
-GitHub Actions include:
-
-- [CI: Python and Documentation Checks](https://github.com/denisecase/nlp-03-text-exploration/actions/workflows/ci-python-zensical.yml)
-- [CD: Documentation Deployment](https://github.com/denisecase/nlp-03-text-exploration/actions/workflows/deploy-zensical.yml)
+- [CI: Python and Documentation Checks](https://github.com/ajerineg-coder/nlp-03-text-exploration-custom/actions/workflows/ci-python-zensical.yml)
+- [CD: Documentation Deployment](https://github.com/ajerineg-coder/nlp-03-text-exploration-custom/actions/workflows/deploy-zensical.yml)
 
 ## Developer Reference
 
-Follow the
-[Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
-for **detailed instructions and troubleshooting**.
+Follow the [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/) for detailed instructions and troubleshooting.
 
 ### Initialize and Update the Python Environment
 
-With the project open in VS Code, open a VS Code terminal.
-Paste each command and hit Enter or Return after to run it.
+From the VS Code terminal:
 
 ```shell
 uvx pup-clean --delete
@@ -169,12 +198,7 @@ uv audit
 
 ### Set Up and Run Git Hooks
 
-Set up and run the git hooks to perform
-basic checks automatically before
-any changes get pushed to GitHub.
-
-In the VS Code terminal,
-paste each command and hit Enter or Return after to run it.
+Git hooks help check project files before changes are committed and pushed.
 
 ```shell
 uvx prek install --force
@@ -182,54 +206,53 @@ uvx prek update --freeze --cooldown-days 7
 
 git add -A
 uvx prek run --all-files
-# repeat if changes were made
 uvx prek run --all-files
 ```
 
 ### Run Common Chores
 
-Run linters, formatters, type checks, tests, and
-build the documentation.
+Run code quality checks, automated tests, and documentation builds:
 
 ```shell
 uv run ruff check . --fix
 uv run ruff format .
-
 uv run ty check
 uv run python -m pytest
 uv run python -m zensical build
 ```
 
-### Git add-commit-push to GitHub
+### Git Add-Commit-Push to GitHub
 
-After making useful changes, save your work to GitHub.
+After making changes, save the work to GitHub:
 
 ```shell
 git add -A
-git commit -m "describe your changes in quotes"
+git commit -m "Complete custom fraud text exploration"
 git push -u origin main
 ```
 
 ## Developer Notes
 
-- Use the **UP ARROW** and **DOWN ARROW** in the terminal to scroll through past commands.
-- Use `CTRL+f` to find (and replace) text within a file.
+- Use the **UP ARROW** and **DOWN ARROW** in the terminal to scroll through previous commands.
+- Use **Command + F** on macOS to search within a file.
+- Use **Command + S** to save changes in VS Code.
+- Run verification checks before committing and pushing changes.
 
 ## Developer Tools
 
-This project uses professional Python tools to support development,
-testing, documentation, and code quality.
+This project uses the following tools:
 
 - [uv](https://docs.astral.sh/uv/) - Python environments and dependencies.
-- [Ruff](https://docs.astral.sh/ruff/) - Python linting and formatting, configured in [.ruff.toml](.ruff.toml).
+- [Ruff](https://docs.astral.sh/ruff/) - Python linting and formatting.
 - [ty](https://docs.astral.sh/ty/) - Python type checking.
-- [pytest](https://docs.pytest.org/) - automated Python testing, configured in [.pytest.toml](.pytest.toml).
-- [prek](https://prek.j178.dev/) - Git hooks and automated checks, configured in [prek.toml](prek.toml).
-- [Zensical](https://zensical.org/) - project documentation, configured in [zensical.toml](zensical.toml).
+- [pytest](https://docs.pytest.org/) - Automated Python testing.
+- [prek](https://prek.j178.dev/) - Git hooks and automated checks.
+- [Zensical](https://zensical.org/) - Project documentation.
 
 ## Links
 
-- [Hosted Documentation](https://denisecase.github.io/nlp-03-text-exploration/)
+- [GitHub Repository](https://github.com/ajerineg-coder/nlp-03-text-exploration-custom)
+- [Hosted Documentation](https://ajerineg-coder.github.io/nlp-03-text-exploration-custom/)
 - [Professional Python Workflow Guide](https://denisecase.github.io/pro-analytics-02/)
 - [Citation](CITATION.cff)
 - [License](LICENSE)

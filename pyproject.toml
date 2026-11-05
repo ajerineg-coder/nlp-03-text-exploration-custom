@@ -14,7 +14,7 @@
 
 
 [project]
-name = "nlp"               # CUSTOM: Package distribution name (use lowercase and dashes).
+name = "nlp-03-text-exploration-custom"
 readme = "README.md"
 requires-python = ">=3.14"
 version = "0.1.0"
@@ -46,6 +46,7 @@ dependencies = [
 #      and documenting the project without becoming runtime dependencies.
 
 dev = [
+    "ipykernel>=7.4.0",
     # REQ.DEV.DEPS: Standard tools for Python development and validation.
     "pytest",     # WHY: Run automated tests.
     "pytest-cov", # WHY: Measure and report test coverage.

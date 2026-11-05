@@ -64,34 +64,61 @@ LOG.info("Logger configured.")
 # A corpus is a collection of documents.
 # Each document includes a category and text.
 
+
 corpus: list[dict[str, str]] = [
-    # Dogs
-    {"category": "dog", "text": "A dog barks loudly."},
-    {"category": "dog", "text": "The puppy runs in the yard."},
-    {"category": "dog", "text": "A canine wears a leash."},
-    {"category": "dog", "text": "The kennel holds the dog."},
-    {"category": "dog", "text": "The dog ran across the yard."},
-    {"category": "dog", "text": "The puppy ran across the yard."},
-    # Cats
-    {"category": "cat", "text": "A cat sleeps quietly."},
-    {"category": "cat", "text": "The kitten plays with yarn."},
-    {"category": "cat", "text": "A feline purrs softly."},
-    {"category": "cat", "text": "The cat has whiskers."},
-    {"category": "cat", "text": "The cat slept near the window."},
-    {"category": "cat", "text": "The kitten slept near the window."},
-    # Cars
-    {"category": "car", "text": "A car drives on the road."},
-    {"category": "car", "text": "The sedan parks in the garage."},
-    {"category": "car", "text": "A vehicle has four wheels."},
-    {"category": "car", "text": "The car moves down the highway."},
-    {"category": "car", "text": "The car stopped near the garage."},
-    {"category": "car", "text": "The sedan stopped near the garage."},
-    # Trucks
-    {"category": "truck", "text": "A truck carries cargo."},
-    {"category": "truck", "text": "The pickup pulls a trailer."},
-    {"category": "truck", "text": "The engine powers the truck."},
-    {"category": "truck", "text": "The truck hauls heavy loads."},
+    # Check Fraud
+    {
+        "category": "check_fraud",
+        "text": "A counterfeit check was deposited into the account.",
+    },
+    {
+        "category": "check_fraud",
+        "text": "The customer reported an altered check with a different payee.",
+    },
+    {
+        "category": "check_fraud",
+        "text": "A stolen check was presented for deposit at the branch.",
+    },
+    {
+        "category": "check_fraud",
+        "text": "Multiple suspicious checks were deposited and funds were withdrawn.",
+    },
+    # Wire Fraud
+    {
+        "category": "wire_fraud",
+        "text": "The customer received fraudulent wire instructions by email.",
+    },
+    {
+        "category": "wire_fraud",
+        "text": "A suspicious wire transfer was requested to an unknown beneficiary.",
+    },
+    {
+        "category": "wire_fraud",
+        "text": "The customer was instructed to send a wire for an investment opportunity.",
+    },
+    {
+        "category": "wire_fraud",
+        "text": "A fraudulent email requested a wire transfer to a new account.",
+    },
+    # Account Takeover
+    {
+        "category": "account_takeover",
+        "text": "An unauthorized login was detected on the customer's online banking.",
+    },
+    {
+        "category": "account_takeover",
+        "text": "The customer reported an unexpected password reset notification.",
+    },
+    {
+        "category": "account_takeover",
+        "text": "A suspicious login was followed by changes to account information.",
+    },
+    {
+        "category": "account_takeover",
+        "text": "An unknown device accessed online banking and attempted a transfer.",
+    },
 ]
+
 
 # Show results
 print(f"Corpus contains {len(corpus)} documents.")
@@ -108,10 +135,37 @@ print(f"Corpus contains {len(corpus)} documents.")
 # and stripping common punctuation. We also filter out very short tokens (length <= 2).
 # This simple tokenizer is sufficient for our small, controlled corpus.
 # Use the string strip() method to remove punctuation from the beginning and end of each token.
+
+stop_words = {
+    "the",
+    "was",
+    "were",
+    "and",
+    "for",
+    "with",
+    "into",
+    "from",
+    "that",
+    "this",
+    "had",
+    "has",
+    "are",
+    "not",
+    "but",
+    "been",
+}
+
+
 def tokenize(text: str) -> list[str]:
-    """Tokenize the input text into a list of cleaned tokens."""
+    """Clean and tokenize text, removing common stop words."""
     tokens = text.lower().split()
-    return [t.strip(".,:;!?()[]\"'") for t in tokens if len(t) > 2]
+    return [
+        cleaned
+        for token in tokens
+        if (cleaned := token.strip(".,:;!?()[]\"'"))
+        and len(cleaned) > 2
+        and cleaned not in stop_words
+    ]
 
 
 # Define a new empty list to hold the token records we will create.
@@ -229,7 +283,7 @@ for doc in corpus:
                 co_occurrence_dict[token].append(ctx)
 
 # Show results
-for target in ["dog", "cat", "car", "truck"]:
+for target in ["check", "wire", "login"]:
     print(f"\nContext for '{target}':")
     print(co_occurrence_dict[target][:10])
 
@@ -276,54 +330,43 @@ print(bigram_freq_df.head(10))
 # Section 9. Visualize Token Frequencies
 # ============================================================
 
-print("IMPORTANT: Close chart window to continue execution.")
 
-# Define a new DataFrame that filters the category frequency DataFrame
-# to get the top 5 tokens for the "dog" category.
-dog_df = category_freq_df.filter(pl.col("category") == "dog").head(5)
+# Compare the five most frequent words across fraud categories.
 
-# Create a figure that is 8 inches wide and 4 inches tall
-plt.figure(figsize=(8, 4))
+categories = ["check_fraud", "wire_fraud", "account_takeover"]
+titles = ["Check Fraud", "Wire Fraud", "Account Takeover"]
 
-# Add a bar chart to the figure using the tokens as the x-axis and their frequencies as the y-axis.
-plt.bar(dog_df["token"], dog_df["len"])
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
-# Define the x-axis tick parameters to rotate the labels by 45 degrees for better readability.
-# The gca() function gets the current axes of the plot, and tick_params() is used to set the rotation of the x-axis labels.
-ax = plt.gca()
-ax.tick_params(axis="x", labelrotation=45)
+for ax, category, title in zip(axes, categories, titles):
+    subset = (
+        category_freq_df.filter(pl.col("category") == category)
+        .sort(["len", "token"], descending=[True, False])
+        .head(5)
+    )
 
-# Set the title and labels for the axes of the plot.
-plt.title("Case Example: Top Tokens (Dog Category)\n(Close this window to continue)")
-plt.xlabel("Token")
-plt.ylabel("Frequency")
+    ax.bar(subset["token"].to_list(), subset["len"].to_list())
+    ax.set_title(title)
+    ax.set_ylabel("Word Frequency")
+    ax.tick_params(axis="x", rotation=45)
 
-# Adjust the layout of the plot to prevent overlap and ensure everything fits well.
+plt.suptitle("Fraud Alert Text Analysis: Top Words by Category")
 plt.tight_layout()
-
-# Display the plot on the screen.
-# The execution of the script will pause until the plot window is closed.
 plt.show()
-
 
 # ============================================================
 # Section 10. Interpret Results and Identify Patterns
 # ============================================================
 
-print("\nCASE GENERAL OBSERVATIONS:")
 
-print("- Tokens cluster by category (dog, cat, car, truck).")
-print("- Words that appear in similar contexts behave similarly.")
-print("- Co-occurrence reveals contextual relationships between words.")
-print("- Bigrams capture local structure beyond single tokens.")
-print("- Patterns emerge before any machine learning is applied.")
+print("\nCUSTOM FRAUD ANALYSIS OBSERVATIONS:")
 
-print("\nADDIE GEMMELL SPECIFIC OBSERVATIONS:")
-print("- Word frequencies help identify common terms within each category.")
-print("- Bigrams and co-occurrence show how words relate to each other.")
-print(
-    "- These techniques could also help identify patterns in fraud alerts and case notes."
-)
+print("- Check fraud descriptions frequently reference checks and deposits.")
+print("- Wire fraud descriptions emphasize wire transfers and payment requests.")
+print("- Account takeover descriptions include login and online banking terms.")
+print("- Co-occurrence and bigrams provide context beyond individual words.")
+print("- These results are based on fictional descriptions, not actual fraud data.")
+print("- Word frequency alone cannot confirm fraudulent activity.")
 
 
 # ============================================================
